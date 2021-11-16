@@ -17,10 +17,53 @@ La programación imperativa se centra en el como, la declarativa en el que. Un e
 
 La grafica anterior representa una taxonomía muy basica de los paradigmas.
 
-Algunos lenguajes soportan multiples paradigmas, para el caso de java, en un principio es dirigido a objetos, a partir de la versión 8 se incluyen mejoras que permiten la programación funcional, pero no perdamos de vistas otros paradigmas soportados por java tales como el reflexivo, generico, ¿cuales otros mas?
+Algunos lenguajes soportan multiples paradigmas, para el caso de java, en principio es dirigido a objetos, a partir de la versión 8 se incluyen mejoras que permiten la programación funcional, pero no perdamos de vistas otros paradigmas soportados por java tales como el reflexivo, generico, ¿cuales otros mas?
 
 
 
 
 ## El papel de los genericos
-Solo vasta con darle una mirada a la documentación de nuevas interfaces en java 8 tales como [Function](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html) o [Stream](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html) que en su definición usan genericos ampliamente, 
+Solo vasta con darle una mirada a la documentación de nuevas interfaces en java 8 tales como [Function](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html) o [Stream](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html) que en su definición usan genericos ampliamente, genericos en programación funcional es como una cerveza para la resaca.
+
+Sin mas preambulo, si quieres conocer con mayor detalle sobre genericos recomiendo leer la documentación de oracle java sobre genericos, [Generics](https://docs.oracle.com/javase/tutorial/java/generics/index.html), por el momento, el presente articulo da una breve introducción.
+
+Un generico es la forma mas general de definir una clase, interfaz o metodo, permitiendo usar el mismo código con diferentes parametros, adicionalmente, brinda mayor estabilidad teniendo en cuenta que elimina los problemas de casting.
+
+### Tipos Genéricos
+Se refiere a clases o interfaces que son parametrizados usando tipos
+
+En una clase Producto que trabaja con objetos de cualquier tipo:
+
+```markdown
+public class Producto {
+    private Object object;
+
+    public void set(Object object) { this.object = object; }
+    public Object get() { return object; }
+}
+```
+
+Teniendo en cuenta la genericidad del atributo object, no hay forma de verificar el código en tiempo de compilación. Ahora demos un vistazo al mismo código usando genericos.
+
+```markdown
+public class Producto<T> {
+    private T t;
+
+    public void set(T t) { this.t = t; }
+    public T get() { return t; }
+}
+```
+Tenga en cuenta que en la definición de una clase generica se puede usar mas de un parametro de tipo generico.
+
+```markdown
+class name<T1, T2, ..., Tn> { /* ... */ 
+```
+### Convención de nombres
+<ul>
+<li>E - Elemento (Usado en las colecciones)</li>
+<li>K - Clave</li>
+<li>N - Número</li>
+<li>T - Tipo</li>
+<li>V - Valor</li>
+<li>S,U,V etc. - 2nd, 3rd, 4th tipos</li>
+</ul>
