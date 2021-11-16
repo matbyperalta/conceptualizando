@@ -67,3 +67,34 @@ class name<T1, T2, ..., Tn> { /* ... */
 <li>V - Valor</li>
 <li>S,U,V etc. - 2nd, 3rd, 4th tipos</li>
 </ul>
+
+### Multiples parametros de tipo
+El siguiente ejemplo es sobre una interfaz que define dos parametros, uno para representar una clave y el otro para un valor.
+
+```markdown
+public interface Producto<K, V> {
+    public K getClave();
+    public V getValor();
+}
+
+public class Activo<K, V> implements Producto<K, V> {
+
+    private K clave;
+    private V valor;
+
+    public Activo(K clave, V valor) {
+	this.clave = clave;
+	this.valor = valor;
+    }
+
+    public K getClave()	{ return clave; }
+    public V getValor() { return valor; }
+}
+```
+
+De tal forma que al instanciarlo tenemos.
+```markdown
+Producto<Integer,Credito> = new Activo<Integer,Credito>(1,new Credito());
+```
+
+
