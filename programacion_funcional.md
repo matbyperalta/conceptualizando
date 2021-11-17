@@ -92,9 +92,71 @@ public class Activo<K, V> implements Producto<K, V> {
 }
 ```
 
-De tal forma que al instanciarlo tenemos.
+De tal forma que al instanciar tenemos.
 ```markdown
 Producto<Integer,Credito> = new Activo<Integer,Credito>(1,new Credito());
 ```
+### Metodos genericos
+Incluye sus propios tipos de parametros, se permite metodos estaticos y no estaticos con constructor generico. La sintaxis incluye una lista de parametros dentro de parentisis angulares que aparecen antes del tipo de retorno de la firma el metodo.
+```markdown
+class Repository {
+    public static <K, V> void save(CacheObject<K, V> p1) {
 
+    }
+}
+
+ class CacheObject<K, V> {
+    private K key;
+    private V value;
+
+    public CacheObject(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public void setKey(K key) { this.key = key; }
+    public void setValue(V value) { this.value = value; }
+    public K getKey()   { return key; }
+    public V getValue() { return value; }
+}
+
+class CustomerType{
+
+}
+
+Se puede invocar usando de manera explicita el tipo
+´´´markdown
+CacheObject<Integer, CustomerType> p1 = new CacheObject<>(1, new CustomerType());
+Repository.<Integer,CustomerType>save(p1);
+```
+O se puede invocar excluir el tipo y el compilador infiere el tipo
+```markdown
+CacheObject<Integer, CustomerType> p1 = new CacheObject<>(1, new CustomerType());
+Repository.save(p1);
+```
+### Tipo de parametro delimitado
+En algunos casos se necesita restringir el tipo que puede ser usado como argumento, por ejemplo un metodo que opera producutos de credito bancario querra solamente aceptar productos que extiendan del credito o sus subclases.
+```markdown
+class Loan{ }
+class InvesmentFree extends Loan{ }
+class InterestService{
+  public <U extends Loan> void calculateMonthlyRate(U u){
+  }
+}
+```
+### Comodines
+Se representa por el simbolo interrogante ?, y significa que puede representar cualquier tipo. Puede ser usado en parametros de tipo, campos, vaiables locales, en el retorno, pero nunca puede ser usado como argumento en la invocación de un metodo, instanciación de una clase o un super tipo.
+### Comodines con delimitación superior
+Se usa para relajar la restricción de una variable. Por ejemplo, si necesita un metodo que trabaje con List<InvesmentFree>, List<Rotary>, List<BuyWallet>.
+```markdown
+public static void process(List<? extends Loan> list) { /* ... */ }
+```
+En este caso <? extends Loan>, Loan es cualquier tipo, y ? es cualquier Loan o cualquier subtipo de Loan. Ejemplo de uso.
+```markdown
+public static void process(List<? extends Loan> list) {
+    for (Loan elem : list) {
+        // ...
+    }
+}
+```
 
