@@ -180,14 +180,59 @@ Todo un clasico, el número que entra a la maquina (función) se denota con una 
 
 ### Expresiones lambda
 
-Antes de hablar de las expresiones lambda recordemos a su antecesor, su majestad la Clase Interna Anónima y a sus nobles primas las Interfaces Funcionales.
+Antes de hablar de las expresiones lambda recordemos a sus antecesores, su majestad la Clase Interna Anónima y a sus nobles primas las Interfaces Funcionales.
  
-La clase interna anónima permite implementar clases para generar objetos que solo se usaran una vez y por tanto no se le volvera a hacer una referencia, no tiene nombre, se declara y se crea en la misma declaración. Se usa reemplazando las variables de un objeto por la palabra reservada `new`. Uno de los ejempos mas habituales es la implementación de la interfaz `Runnable`.
+La <b>clase interna anónima</b> permite implementar clases para generar objetos que solo se usaran una vez y por tanto no se le volvera a hacer una referencia, no tiene nombre, se declara y se crea en la misma declaración. Se usa reemplazando las variables de un objeto por la palabra reservada `new`. Uno de los ejempos mas habituales es la implementación de la interfaz `Runnable`.
 
 ```markdown
-MyThread myThread = new MyThread(); //
+MyThread myThread = new MyThread(); //donde MyThread implementa la interfaz Runnable
+Thread runner = new Thread(myThread);
+runner.start();
 ```
 
+Pero con su majestad la clase interna anónima tenemos un resultado eficiente
+```markdown
+Thread runner = new Thread(new Runnable() {
+    public void run() {
+        //el hilo hace su trabajo aquí
+    }
+});
+runner.start();
+```
+
+Sin embargo, una clase separada que implementa Runnable es necesaria por cada hilo que se requiera, muchos dicen que al colocar la clase como parametro en la creación del objeto es mucho mas facil de leer, a mi no me parece, en lo que si estoy de acuerdo, es que es muy poco elegante al usar mucho código para definir un objeto o un metodo.
+
+Las <b>interfaces funcionales</b> son conocidas desde Java SE 8 por definir un solo metodo, este tipo de interfaz fueron conocidas en el pasado como  Single Abstract Method type (SAM).
+
+```markdown
+package java.lang;
+public interface Runnable {
+  void run();
+}
+```
+
+El uso de interfaces funcionales con clases internas anónimas es un patron comun en Java, y el uso de interfaces funcionales se usan en expresiones lambda. Finalmente, no olvidemos que este tipo de codificación no resuelve el problema de la verticalidad.
+
+### Sintaxis de expresiones lambda
+
+Las expresiones lambda resuelven la verticalidad de 5 lineas de código en una sola sentencia. Una expresión lambda es compuesta por tres partes:
+
+<table>
+  <tbody>
+    <tr>
+      <td>Lista de Argumentos</td>
+      <td>Simbolo flecha</td>
+      <td>Cuerpo</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td><code>(int x, int y)</code></td>
+      <td><code>-&gt;</code></td>
+      <td><code>x + y</code></td>
+    </tr>
+  </tbody>
+</table>
 
 
 
