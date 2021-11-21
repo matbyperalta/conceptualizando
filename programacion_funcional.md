@@ -174,7 +174,20 @@ En el mundo real podemos representarlo como una maquina dispensadora de alimento
 
 Y para los qur tuvieron la fortuna de saborear las matematicas no podemos olvidarnos del famoso:
 ![image](https://user-images.githubusercontent.com/44678730/142774093-3b95c407-fa34-4c30-b8e4-1538f12d109f.png)
-Todo un clasico, el número que entra a la maquina (función) se denota con una letra, al número que sale se denota con f(x)
+
+Todo un clasico, el número que entra a la maquina (función) se denota con una letra, al número que sale se denota con f(x). Esta notación matematica es crucial para la definición sintactica de las expresiones lambda incluidas en Java SE 8.
+
+
+### Expresiones lambda
+
+Antes de hablar de las expresiones lambda recordemos a su antecesor, su majestad la Clase Interna Anónima y a sus nobles primas las Interfaces Funcionales.
+ 
+La clase interna anónima permite implementar clases para generar objetos que solo se usaran una vez y por tanto no se le volvera a hacer una referencia, no tiene nombre, se declara y se crea en la misma declaración. Se usa reemplazando las variables de un objeto por la palabra reservada `new`. Uno de los ejempos mas habituales es la implementación de la interfaz `Runnable`.
+
+```markdown
+MyThread myThread = new MyThread(); //
+```
+
 
 
 
