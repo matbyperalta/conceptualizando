@@ -20,8 +20,6 @@ La grafica anterior representa una taxonomía muy basica de los paradigmas.
 Algunos lenguajes soportan multiples paradigmas, para el caso de java, en principio es dirigido a objetos, a partir de la versión 8 se incluyen mejoras que permiten la programación funcional, pero no perdamos de vistas otros paradigmas soportados por java tales como el reflexivo, generico, ¿cuales otros mas?
 
 
-
-
 ## El papel de los genericos
 Solo vasta con darle una mirada a la documentación de nuevas interfaces en java 8 tales como [Function](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html) o [Stream](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html) que en su definición usan genericos ampliamente, genericos en programación funcional es como una cerveza para la resaca.
 
@@ -123,9 +121,9 @@ class Repository {
 class CustomerType{
 
 }
-
+```
 Se puede invocar usando de manera explicita el tipo
-´´´markdown
+```markdown
 CacheObject<Integer, CustomerType> p1 = new CacheObject<>(1, new CustomerType());
 Repository.<Integer,CustomerType>save(p1);
 ```
@@ -135,7 +133,7 @@ CacheObject<Integer, CustomerType> p1 = new CacheObject<>(1, new CustomerType())
 Repository.save(p1);
 ```
 ### Tipo de parametro delimitado
-En algunos casos se necesita restringir el tipo que puede ser usado como argumento, por ejemplo un metodo que opera producutos de credito bancario querra solamente aceptar productos que extiendan del credito o sus subclases.
+En algunos casos se necesita restringir el tipo que puede ser usado como argumento, por ejemplo un metodo que opera productos de credito bancario querra solamente aceptar productos que extiendan de la clase credito o sus subclases.
 ```markdown
 class Loan{ }
 class InvesmentFree extends Loan{ }
@@ -145,7 +143,7 @@ class InterestService{
 }
 ```
 ### Comodines
-Se representa por el simbolo interrogante ?, y significa que puede representar cualquier tipo. Puede ser usado en parametros de tipo, campos, vaiables locales, en el retorno, pero nunca puede ser usado como argumento en la invocación de un metodo, instanciación de una clase o un super tipo.
+Se representa por el simbolo interrogante ?, y significa que puede representar cualquier tipo. Puede ser usado en parametros de tipo, campos, variables locales, en el retorno, pero nunca puede ser usado como argumento en la invocación de un metodo, instanciación de una clase o un super tipo.
 ### Comodines con delimitación superior
 Se usa para relajar la restricción de una variable. Por ejemplo, si necesita un metodo que trabaje con List<InvesmentFree>, List<Rotary>, List<BuyWallet>.
 ```markdown
@@ -159,4 +157,21 @@ public static void process(List<? extends Loan> list) {
     }
 }
 ```
+
+## A lo que vinimos
+Programación funcional es tal y como suena, ¡funciones!, entonces vamos al principio.
+
+Una función es una regla de correspondencia entre dos conjuntos de tal manera que a cada elemento del primer conjunto le corresponde uno y sólo un elemento del segundo conjunto.
+
+![image](https://user-images.githubusercontent.com/44678730/142350984-26873740-ebb8-4a39-8c0b-09bdedfeb7c5.png)
+
+
+En un sentido mas extricto, podemos decir una función como un aparato o sistma, el cual recibe una entrada o dominio, el proceso que realice con el dominio es la función, y el resultado es el contrdominio.
+
+![image](https://user-images.githubusercontent.com/44678730/142351001-09136ea7-5221-45c5-bda4-f6707beee93e.png)
+
+En el mundo real podemos representarlo como una maquina dispensadora de alimentos, le das como entrada el alimento que quieres, y te entrega un alimento.
+
+
+
 
