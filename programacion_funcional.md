@@ -172,6 +172,9 @@ En un sentido mas extricto, podemos decir pensar en una función como un aparato
 
 En el mundo real podemos representarlo como una maquina dispensadora de alimentos, le das como entrada el alimento que quieres, y te entrega un alimento.
 
+Y para los qur tuvieron la fortuna de saborear las matematicas no podemos olvidarnos del famoso:
+![image](https://user-images.githubusercontent.com/44678730/142774093-3b95c407-fa34-4c30-b8e4-1538f12d109f.png)
+Todo un clasico, el número que entra a la maquina (función) se denota con una letra, al número que sale se denota con f(x)
 
 
 
