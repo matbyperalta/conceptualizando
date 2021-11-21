@@ -166,7 +166,7 @@ Una función es una regla de correspondencia entre dos conjuntos de tal manera q
 ![image](https://user-images.githubusercontent.com/44678730/142350984-26873740-ebb8-4a39-8c0b-09bdedfeb7c5.png)
 
 
-En un sentido mas extricto, podemos decir una función como un aparato o sistma, el cual recibe una entrada o dominio, el proceso que realice con el dominio es la función, y el resultado es el contrdominio.
+En un sentido mas extricto, podemos decir pensar en una función como un aparato o sistma, el cual recibe una entrada o dominio, el proceso que realice con el dominio es la función, y el resultado es el contrdominio.
 
 ![image](https://user-images.githubusercontent.com/44678730/142351001-09136ea7-5221-45c5-bda4-f6707beee93e.png)
 
