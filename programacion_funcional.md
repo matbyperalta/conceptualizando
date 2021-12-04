@@ -234,5 +234,7 @@ Las expresiones lambda resuelven la verticalidad de 5 lineas de código en una s
   </tbody>
 </table>
 
+El cuerpo puede ser una expresión simple o un bloque de sentencia, en la expresión simple el cuerpo es evaluado y retornado, en la expresión bloque el cuerpo es evaluado como el cuerpo de un metodo y una sentencia de retorno devuelve el control a quien invoca el metodo anónimo.
+
 
 
