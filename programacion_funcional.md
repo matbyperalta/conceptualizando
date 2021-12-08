@@ -166,13 +166,13 @@ Una función es una regla de correspondencia entre dos conjuntos de tal manera q
 ![image](https://user-images.githubusercontent.com/44678730/142350984-26873740-ebb8-4a39-8c0b-09bdedfeb7c5.png)
 
 
-En un sentido mas extricto, podemos decir pensar en una función como un aparato o sistma, el cual recibe una entrada o dominio, el proceso que realice con el dominio es la función, y el resultado es el contrdominio.
+En un sentido mas extricto, podemos pensar en una función como un aparato o sistma, el cual recibe una entrada o dominio, el proceso que realice con el dominio es la función, y el resultado es el contradominio.
 
 ![image](https://user-images.githubusercontent.com/44678730/142351001-09136ea7-5221-45c5-bda4-f6707beee93e.png)
 
 En el mundo real podemos representarlo como una maquina dispensadora de alimentos, le das como entrada el alimento que quieres, y te entrega un alimento.
 
-Y para los qur tuvieron la fortuna de saborear las matematicas no podemos olvidarnos del famoso:
+Y para los que tuvieron la fortuna de saborear las matematicas no podemos olvidarnos del famoso:
 ![image](https://user-images.githubusercontent.com/44678730/142774093-3b95c407-fa34-4c30-b8e4-1538f12d109f.png)
 
 Todo un clasico, el número que entra a la maquina (función) se denota con una letra, al número que sale se denota con f(x). Esta notación matematica es crucial para la definición sintactica de las expresiones lambda incluidas en Java SE 8.
@@ -235,6 +235,61 @@ Las expresiones lambda resuelven la verticalidad de 5 lineas de código en una s
 </table>
 
 El cuerpo puede ser una expresión simple o un bloque de sentencia, en la expresión simple el cuerpo es evaluado y retornado, en la expresión bloque el cuerpo es evaluado como el cuerpo de un metodo y una sentencia de retorno devuelve el control a quien invoca el metodo anónimo.
+
+Siguiendo con el ejemplo de la interfaz Runnable, vamos a la señorita en acción:
+
+```markdown
+public class RunnablePrueba{
+  public static void main(String [] vargArg){
+    //Clase interna anonima
+    Runnable anonimo = new Runnable(){
+      @Override
+      public run(){
+        System-out.printl("... anonimo por aqui! ...");
+      }
+    };
+    //expresion lambda
+    Runnable lambda = () -> Systme.out.println("... lambda por aqui! ...");
+
+    anonimo.run();
+    lambda.run();
+  }
+}
+```
+La expresión lambda convierte 5 líneas de código en 1 línea de código.
+
+Ahora un ejemplo de orden ascendente y descendente:
+```markdowon
+public class Main {
+    public static void main(String[] varg) {
+        List<Persona> personaList = Persona.crearList();
+        // Orden ascendente con clase interna
+        Collections.sort(personaList, new Comparator<Persona>() {
+            public int compare(Persona p1, Persona p2) {
+                return p1.getNombre().compareTo(p2.getNombre());
+            }
+        });
+        System.out.println("=== Orden ascendente nombre ===");
+        for (Person p : personList) {
+            p.imprimirNombre();
+        }
+        // Orden  descendente con expresion lambda
+        System.out.println("=== Orden descendente nombre ===");
+        Collections.sort(personList, (Persona p1, Persona p2) -> p2.getNombre().compareTo(p1.getNombre()));
+        for (Persona p : personList) {
+            p.imprimirNombre();
+        }
+	System.out.println("=== Orden descendente SurName ===");
+        Collections.sort(personList, (p1, p2) -> p2.getSurName().compareTo(p1.getSurName()));
+        for (Person p : personList) {
+            p.printName();
+        }
+    }
+}
+```
+La primera expresión lambda declara el tipo del parametro, en la segunda expresión lambda no. Lambda soporta "target typing" permitiendo inferir el tipo del paraemtro dependiendo del contexto en cual se esta usando.
+
+
 
 
 
