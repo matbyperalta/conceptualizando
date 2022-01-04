@@ -287,7 +287,7 @@ public class Main {
     }
 }
 ```
-La primera expresión lambda declara el tipo del parametro, en la segunda expresión lambda no. Lambda soporta "target typing" permitiendo inferir el tipo del paraemtro dependiendo del contexto en cual se esta usando.
+La primera expresión lambda declara el tipo del parámetro, en la segunda expresión lambda no. Lambda soporta "target typing" permitiendo inferir el tipo del parámetro dependiendo del contexto en cual se esta usando.
 
 
 
