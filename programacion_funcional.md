@@ -289,7 +289,236 @@ public class Main {
 ```
 La primera expresión lambda declara el tipo del parámetro, en la segunda expresión lambda no. Lambda soporta "target typing" permitiendo inferir el tipo del parámetro dependiendo del contexto en cual se esta usando.
 
+## Caso de uso de una consulta comun
+Un programa para un caso de uso comun es hacer busquedas en colecciones de registros que coincidan con condiciones especificas. Dada una lista de clientes, varios criterios son usados para establecer contacto con los clientes.
 
+En este ejemplo, el mensaje necesita ser enviado a tres diferentes tipos de clientes:
+- Monoproductos: clientes con un solo producto.
+- Bi-producto: clientes con dos productos.
+- Multiproductos: cliente con tres productos.
 
+Clase Customer
+```markdowon
+public class Customer {
+  private String firstName;
+  private String lastName;
+  private int age;
+  private Gender gender;
+  private String eMail;
+  private String phone;
+  private String address;
+  private List<Product> listProduct;
+```
 
+La clase Customer usa un builder para crear nuevos objetos. Una lista simple de productos por cliente es creada con el método createCustomerList.
+
+```markdowon
+public static List<Customer> createCustomerList(){
+    List<Customer> people = new ArrayList<>();
+    
+    people.add(
+      new Builder()
+            .firstName("Mario")
+            .lastName("Vargas")
+            .age(20)
+            .gender(Gender.MALE)
+            .email("mario.vargas@example.com")
+            .phoneNumber("201-121-4678")
+            .address("Calle 152 c 72-89")
+            .listProduct(Product.createProductByCustomer())
+            .build() 
+      );
+    
+    people.add(
+      new Builder()
+            .firstName("Yeny")
+            .lastName("Perez")
+            .age(25)
+            .gender(Gender.FEMALE)
+            .email("yeny.perez@example.com")
+            .phoneNumber("202-123-4678")
+            .address("Calle 152 c 72-90")
+            .listProduct(Product.createProductByCustomer())
+            .build() 
+      );
+    
+    people.add(
+      new Builder()
+            .firstName("Rosa")
+            .lastName("Blanco")
+            .age(26)
+            .gender(Gender.MALE)
+            .email("rosa.blanco@example.com")
+            .phoneNumber("202-123-4678")
+            .address("Calle 152 c 72-91")
+            .listProduct(Product.createProductByCustomer())
+            .build()
+    );
+    
+    people.add(
+      new Builder()
+            .firstName("James")
+            .lastName("Rodriguez")
+            .age(45)
+            .gender(Gender.MALE)
+            .email("james.rodriguez@example.com")
+            .phoneNumber("333-456-1233")
+            .address("Calle 152 c 72-92")
+            .listProduct(Product.createProductByCustomer())
+            .build()
+    );
+    
+    people.add(
+      new Builder()
+            .firstName("Joe")
+            .lastName("Arroyo")
+            .age(68)
+            .gender(Gender.MALE)
+            .email("joe.arroyo@example.com")
+            .phoneNumber("112-111-1111")
+            .address("Calle 152 c 72-89")
+            .listProduct(Product.createProductByCustomer())
+            .build()
+    );
+    
+    people.add(
+      new Builder()
+            .firstName("Phil")
+            .lastName("Anselmo")
+            .age(55)
+            .gender(Gender.MALE)
+            .email("phil.anselmo@examp;e.com")
+            .phoneNumber("222-33-1234")
+            .address("Calle 152 c 72-89")
+            .listProduct(Product.createProductByCustomer())
+            .build()
+    );
+    
+    people.add(
+      new Builder()
+            .firstName("Betty")
+            .lastName("La Fea")
+            .age(84)
+            .gender(Gender.FEMALE)
+            .email("betty.lafea@example.com")
+            .phoneNumber("211-33-1234")
+            .address("Calle 152 c 72-89")
+            .listProduct(Product.createProductByCustomer())
+            .build()
+    );
+    
+    return people;
+  }
+```
+### Un primer intento
+Con una clase Customer y los creterios de busqueda definidos, se escribe la clase FilterContactMethods. Una posible solución define una metodo por cada caso de uso:
+
+Clase FilterContactMethods
+```markdowon
+public class FilterContactMethods {
+
+    public void callCustomerMonoProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (c.getListProduct().size() == 1) {
+                call(c);
+            }
+        }
+    }
+
+    public void callCustomerBiProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (c.getListProduct().size() == 2) {
+                mail(c);
+            }
+        }
+    }
+
+    public void callCustomerMultiProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (c.getListProduct().size() >= 3) {
+                eMail(c);
+            }
+        }
+    }
+
+    public void call(Customer c) {
+        System.out.println("Calling " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getPhone());
+    }
+
+    public void mail(Customer c) {
+        System.out.println("Mailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getAddress());
+    }
+
+    public void eMail(Customer c) {
+        System.out.println("EMailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.geteMail());
+    }
+}
+```
+Se observa como los métodos callCustomerMonoProduct, callCustomerBiProduct y callCustomerMultiProduct describen el tipo de comportamiento que tiene a lugar. Cada criterio de busqueda es claramente definido y hace una llamado a cada acción. Sin embargo, el diseño tiene aspectos negativos:
+
+- No sigue el principio DRY
+	- Cada método repite un mecanismo de bucle.
+	- El criterio de seleccion debe ser escrito por cada método.
+- Se requiere un largo número de método para implimentar cada caso de uso.
+- El código es inflexible. Si hay un cambio en las condiciones se debe modificar gran parte del código, haciendo el código poco mantenible.
+
+### Refactorizar los métodos
+¿Como podemos arreglar este desproposito?, los criterios de busqueda son un buen lugar para empezar, entonces separemos las condiciones de busqueda en métodos separados.
+
+Clase FilterContactMethods2
+
+```markdowon
+public class FilterContactMethods2 {
+
+    public void callCustomerMonoProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (isMono(c)) {
+                call(c);
+            }
+        }
+    }
+
+    public void callCustomerBiProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (isBi(c)) {
+                mail(c);
+            }
+        }
+    }
+
+    public void callCustomerMultiProduct(List<Customer> c1) {
+        for (Customer c : c1) {
+            if (isMulti(c)) {
+                eMail(c);
+            }
+        }
+    }
+
+    public boolean isMono(Customer c){
+        return c.getListProduct().size() == 1;
+    }
+
+    public boolean isBi(Customer c){
+        return c.getListProduct().size() == 2;
+    }
+
+    public boolean isMulti(Customer c){
+        return c.getListProduct().size() >= 3;
+    }
+
+    public void call(Customer c) {
+        System.out.println("Calling " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getPhone());
+    }
+
+    public void mail(Customer c) {
+        System.out.println("Mailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getAddress());
+    }
+
+    public void eMail(Customer c) {
+        System.out.println("EMailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.geteMail());
+    }
+}
+```
+
+Los criterios de busqueda son encapsulados en métodos, lo cual es una mejora con respecto al enfoque anterior, las condiciones de pruebas pueden ser reusadas. Sin embargo, hay aun código repetido y un método separado es requerido para cada caso de uso. ¿Hay una mejor forma de pasar los criterios de busqueda a los métodos?
 
