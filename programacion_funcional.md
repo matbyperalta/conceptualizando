@@ -631,6 +631,46 @@ La expresión lambda resuelve los problemas y las fealdades anteriormente descri
 ### java.util.function
 En el ejemplo de la clase interna anónima, la interfaz funcional Test es pasada como clase anónima a los métodos. En java 8, esta interfaz no es necesaria, ya que posee el paquete java.util.function con un conjunto de interfaces funcionales estandar, para nuestro caso de uso, la interfaz funcional Predicate reune lo que necesitamos para nuestro caso de uso.
 
+```markdowon
+public class FilterContactMethods4 {
+    public void callCustomerMonoProduct(List<Customer> c1, Predicate<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                call(c);
+            }
+        }
+    }
+
+    public void callCustomerBiProduct(List<Customer> c1, Predicate<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                mail(c);
+            }
+        }
+    }
+
+    public void callCustomerMultiProduct(List<Customer> c1, Predicate<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                eMail(c);
+            }
+        }
+    }
+
+    public void call(Customer c) {
+        System.out.println("Calling " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getPhone());
+    }
+
+    public void mail(Customer c) {
+        System.out.println("Mailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getAddress());
+    }
+
+    public void eMail(Customer c) {
+        System.out.println("EMailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.geteMail());
+    }
+}
+```
+
 ### Problema de verticalidad resuelto
 La expresión lambda resuelve el problema y permite el reúso fácil de cualquier expresión.
 
