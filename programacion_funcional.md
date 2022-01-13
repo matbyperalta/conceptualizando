@@ -522,3 +522,135 @@ public class FilterContactMethods2 {
 
 Los criterios de busqueda son encapsulados en métodos, lo cual es una mejora con respecto al enfoque anterior, las condiciones de pruebas pueden ser reusadas. Sin embargo, hay aun código repetido y un método separado es requerido para cada caso de uso. ¿Hay una mejor forma de pasar los criterios de busqueda a los métodos?
 
+### Clases anónimas
+Antes de las expresiones lambda, su majesta la clase interna anónima dominaba el territorio. Por ejemplo, si tenemos una interfaz MyTest con un solo método test que retorna un boolean puede ser una opción (una interfaz funcional). Los criterios de busqueda pueden ser pasados cuando el método es llamado. Una interfaz tal como:
+```markdowon
+public interface Test<T>{
+    public boolean test(T t);
+}
+```
+Ahora actualizamos la clase FilterContactMethods y tenemos:
+```markdowon
+public class FilterContactMethods3 {
+
+    public void callCustomerMonoProduct(List<Customer> c1, Test<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                call(c);
+            }
+        }
+    }
+
+    public void callCustomerBiProduct(List<Customer> c1, Test<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                mail(c);
+            }
+        }
+    }
+
+    public void callCustomerMultiProduct(List<Customer> c1, Test<Customer> cTest) {
+        for (Customer c : c1) {
+            if (cTest.test(c)) {
+                eMail(c);
+            }
+        }
+    }
+
+    public void call(Customer c) {
+        System.out.println("Calling " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getPhone());
+    }
+
+    public void mail(Customer c) {
+        System.out.println("Mailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.getAddress());
+    }
+
+    public void eMail(Customer c) {
+        System.out.println("EMailing " + c.getFirstName() + " " + c.getLastName() + " " + c.getAge() + " at " + c.geteMail());
+    }
+}
+```
+Esta es otra mejora, solo se necesitan tres métodos para realizar las operaciones de los casos de uso. Sin embargo, veremos que hay un tanto de fealdad cuando los metodos son llamados. A continiuación la clase de prueba evidenciando dicha fealdad:
+```markdowon
+public class Main {
+    public static void main(String[] varg) {
+
+        FilterContactMethods filterContactMethods = new FilterContactMethods();
+        List<Customer> listCustomer = Customer.createCustomerList();
+        System.out.println("\n==== Test 01 ====");
+        System.out.println("=== Calling all customer ===\n");
+
+        filterContactMethods.callCustomerMonoProduct(listCustomer);
+        filterContactMethods.callCustomerBiProduct(listCustomer);
+        filterContactMethods.callCustomerMultiProduct(listCustomer);
+
+        System.out.println("\n==== Test 02 ====");
+        System.out.println("=== Calling all customer refactor ===\n");
+
+        FilterContactMethods2 filterContactMethods2 = new FilterContactMethods2();
+        filterContactMethods2.callCustomerMonoProduct(listCustomer);
+        filterContactMethods2.callCustomerBiProduct(listCustomer);
+        filterContactMethods2.callCustomerMultiProduct(listCustomer);
+
+        System.out.println("\n==== Test 03 ====");
+        System.out.println("=== Calling all customer anonymous class ===\n");
+
+        FilterContactMethods3 filterContactMethods3 = new FilterContactMethods3();
+        filterContactMethods3.callCustomerMonoProduct(listCustomer,
+                new Test<Customer>() {
+                    @Override
+                    public boolean test(Customer c) {
+                        return c.getListProduct().size() == 1;
+                    }
+                });
+
+        filterContactMethods3.callCustomerBiProduct(listCustomer,
+                new Test<Customer>() {
+                    @Override
+                    public boolean test(Customer c) {
+                        return c.getListProduct().size() == 2;
+                    }
+                });
+
+        filterContactMethods3.callCustomerMultiProduct(listCustomer,
+                new Test<Customer>() {
+                    @Override
+                    public boolean test(Customer c) {
+                        return c.getListProduct().size() >= 3;
+                    }
+                });
+
+    }
+}
+```
+En las rutinas de prueba para FilterContactMethods3 podemos ver el problema de la verticalidad, este código es dificil de leer, y adicionalmente tenemos que escribir un criterio de busqueda para cada caso de uso.
+
+### La expresión lambda al rescate
+La expresión lambda resuelve los problemas y las fealdades anteriormente descritas
+
+### java.util.function
+En el ejemplo de la clase interna anónima, la interfaz funcional Test es pasada como clase anónima a los métodos. En java 8, esta interfaz no es necesaria, ya que posee el paquete java.util.function con un conjunto de interfaces funcionales estandar, para nuestro caso de uso, la interfaz funcional Predicate reune lo que necesitamos para nuestro caso de uso.
+
+### Problema de verticalidad resuelto
+La expresión lambda resuelve el problema y permite el reúso fácil de cualquier expresión.
+
+```markdowon
+public class Main {
+    public static void main(String[] varg) {
+
+        List<Customer> listCustomer = Customer.createCustomerList();
+        System.out.println("\n==== Test 04 ====");
+        System.out.println("=== Calling all customer predicate function ===\n");
+
+        FilterContactMethods4 filterContactMethods4 = new FilterContactMethods4();
+        Predicate<Customer> monoProduct = mono -> mono.getListProduct().size() == 1;
+        Predicate<Customer> biProduct = bi -> bi.getListProduct().size() == 2;
+        Predicate<Customer> multiProduct = multi -> multi.getListProduct().size() >= 3;
+
+        filterContactMethods4.callCustomerMonoProduct(listCustomer, monoProduct);
+        filterContactMethods4.callCustomerBiProduct(listCustomer, biProduct);
+        filterContactMethods4.callCustomerMultiProduct(listCustomer, multiProduct);
+    }
+}
+```
+Fealdad resuelta, el código es compacto y fácil de leer.
