@@ -694,3 +694,22 @@ public class Main {
 }
 ```
 Fealdad resuelta, el código es compacto y fácil de leer.
+
+## A Java 8 le gusta la vida fácil
+Gracias al paquete java.util.function, la vida es mas facil. Fue introducido en java 8 para implementar programación funcional. Las interfaces funcionales proporcionan los tipos destino de las expresiones lambda. Cada interfaz funcional tiene un método abstracto llamado método funcional a los que se adaptan o emparejan los parámetros de la expresión lambda y el tipo de retorno.
+
+
+![image](https://user-images.githubusercontent.com/44678730/149440523-8b9dc2c1-86ba-4667-b891-2cba24830828.png)
+
+Un conjunto de interfaces estandar son entregadas como punto de inicio para los desarrolladores, algunas de las mas importantes son:
+
+- Predicate: Una propiedad del objeto pasado como argumento
+- Consumer: Una acción a realizar con el objeto pasado como argumento
+- Function: Transforma una T a un R
+- Supplier: Provee una instancia de una T (como una fabrica)
+
+### Function
+
+
+
+
