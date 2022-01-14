@@ -708,8 +708,67 @@ Un conjunto de interfaces estandar son entregadas como punto de inicio para los 
 - Function: Transforma una T a un R
 - Supplier: Provee una instancia de una T (como una fabrica)
 
-### Function
+### Interface Function<T,R>
 
+[Function](https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html#apply-T-) representa una funcón que toma un argumento T y retorna un resultado R. La expresión lambda asignada a un objeto de tipo Function se usa para definir una apply que aplicara la función dada en el argumento.
+ 
+## Método apply()
+Aplica la función dada en su argumento, su sintaxis es:
+```markdowon
+R apply(T t)
+```
+En el siguiente ejemplo definimos una expresión lambda que recibe un entero y resulta en la mitad del valor recibido retornandolo en double.
+```markdowon
+Function<Integer, Double> half = i -> i / 2.0;
+half.apply(100);
+```
+Es el equivalente a decir que dado f(x)=x/2.0, entonces f(100)=100/2.0
 
+Rompiendo la cabeza.
+```markdowon
+String start = "Legion&Conquerors&is&power";
+Function<String,Integer> size = s -> s.split("&").length;
+Function<Integer,Integer> half = i -> i/2;
+Function<Integer,String> word = i -> start.split("&")[i];
+System.out.println(word.apply(half.apply(size.apply(start))));
+```
 
+## Método andThen
+Devuelve una función compuesta en la que la función parametrizada se ejecutará después de la primera, su sintaxis es:
+```markdowon
+default <V> Function<T, V>  andThen(Function<? super R, ? extends V> after)
+```
+En el siguiente ejemplo, aumentamos en 10 veces el valor la salida de la primera función:
+```markdowon
+Function<Integer, Double> half = i -> i / 2.0;
+half = half.andThen(i -> i * 10);
+half.apply(100);
+```
+Es el equivalente a decir que dado g(x)=x*10 y f(x)=x/2.0 y la función compuesta (g o f)(x) entonces (g o f)(x)=g[f(x)]=g(x/2.0)=(x/2.0)*10 
+Rompiendo la cabeza.
+```markdowon
+String start = "Legion&Conquerors&is&power";
+Function<String,Integer> size = s -> s.split("&").length;
+Function<Integer,Integer> half = i -> i/2;
+Function<Integer,String> word = i -> start.split("&")[i];
+System.out.println(size.andThen(half).andThen(word).apply(start));
 
+## Método compose
+Devuelve una función compuesta en la que la función parametrizada se ejecutará primero y luego la primera función, su sintaxis es:
+```markdowon
+default <V> Function<V, R> compose(Function<? super V, ? extends T> before)
+```
+En el siguiente ejemplo, aumentamos en 10 veces el valor dado a la primera función y lo divide en 2:
+```markdowon
+Function<Integer, Double> half = i -> i / 2.0;
+half = half.compose(i -> i*10);
+half.apply(10);
+```
+Es el equivalente a decir que dado g(x)=x*10 y f(x)=x/2.0 y la función compuesta (f o g)(x) entonces (f o g)(x)=f[g(x)]=f(x*10)=(x*10)/2
+Rompiendo la cabeza.
+```markdowon
+String start = "Legion&Conquerors&is&power";
+Function<String,Integer> size = s -> s.split("&").length;
+Function<Integer,Integer> half = i -> i/2;
+Function<Integer,String> word = i -> start.split("&")[i];
+System.out.println(word.compose(half).compose(size).apply(start));
